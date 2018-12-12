@@ -1,0 +1,1 @@
+export const navy = '#001942'
