@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { FaGlobeAmericas, FaHistory, FaUsers, FaRegChartBar } from 'react-icons/fa'
 
+import ReactMapGL from './map.component'
 import RadarChart from './shared/radar_chart.component'
 import { subscribeToStream } from '../socket'
 import { getSentimentData, updateTwitterData, killStream } from '../redux/actions/twitter.actions'
@@ -156,7 +157,7 @@ export class SentimentAnalysis extends PureComponent {
   }
 
   render() {
-    // const { tweets } = this.state.twitterData
+    const { currentModule, twitterData } = this.state
 
     return (
       <Wrapper>
@@ -167,7 +168,7 @@ export class SentimentAnalysis extends PureComponent {
           </form>
         </Header>
         <MainModule>
-          <RadarChart data={{
+          {currentModule === 'sentiment' && <RadarChart data={{
                 variables: [
                   {key: 'anger', label: 'Anger'},
                   {key: 'disgust', label: 'Disgust'},
@@ -199,7 +200,8 @@ export class SentimentAnalysis extends PureComponent {
                     },
                   },
                 ],
-              }}/>
+              }}/>}
+              {currentModule === 'geo' && <ReactMapGL locations={twitterData.locations}/>}
         </MainModule>
         <Footer>
           <div>
