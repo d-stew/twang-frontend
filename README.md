@@ -1,13 +1,19 @@
+## About
+
+Twang uses sentiment analysis and data visualization to provide users with deeper insights into public Twitter conversations.
+
 ## Installation
 
 ```bash
 git clone https://github.com/d-stew/twang-frontend.git
 cd twang-frontend
-yarn
+npm install
 ```
 
 ## Get started
 
+Replace `.env.example` with `.env` and add your own environment variables. 
+
 ```bash
-yarn start
+npm start
 ```
