@@ -1,13 +1,26 @@
 import React, { PureComponent } from 'react'
 import MapGL, { Marker } from 'react-map-gl'
-import MapPin from './map_pin.component'
+import styled from 'styled-components'
 import { isEmpty } from 'lodash'
+import Loader from 'react-loaders'
+
+import MapMarker from './map_pin.component'
 
 require('dotenv').config({ path: '../../.env' })
 
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .loader {
+    margin-bottom: 2em;
+  }
+`
+
 const mapConfig = {
   center: [52.499219, 13.425416],
-  zoom: 2
+  zoom: 1
 };
 
 class ReactMapGL extends PureComponent {
@@ -24,7 +37,7 @@ class ReactMapGL extends PureComponent {
         zoom: mapConfig.zoom,
         isDragging: false,
         startDragLngLat: mapConfig.center,
-        pitch: 50,
+        pitch: 0,
         bearing: 0
       }
     };
@@ -39,22 +52,34 @@ class ReactMapGL extends PureComponent {
   }
 
   renderMarker = (location, index) => {
+    console.log('MARKER!')
     return (
       <Marker key={`marker-${index}`} longitude={location.longitude} latitude={location.latitude}>
-        <MapPin size={20} onClick={() => this.setState({ popupInfo: location })} />
+        <MapMarker size={20} onClick={() => this.setState({ popupInfo: location })} />
       </Marker>
     )
   }
 
   render() {
     const { viewport } = this.state
-    const { locations } = this.props
+    const { keywordSet, locations } = this.props
 
     console.log('LOCATIONS', locations)
 
-    if (isEmpty(locations)) {
+    if (!keywordSet && isEmpty(locations)) {
       return (
-        <div>Loading...</div>
+        <Wrapper>
+          <p>Enter a search keyword above to view geographical data.</p>
+        </Wrapper>
+      )
+    }
+
+    if (keywordSet && isEmpty(locations)) {
+      return (
+        <Wrapper>
+          <Loader type="ball-scale-ripple-multiple" color="white" style={{transform: 'scale(1.5)'}} />
+          <p>Gathering Twitter Data...</p>
+        </Wrapper>
       )
     }
 

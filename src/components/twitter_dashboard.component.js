@@ -149,6 +149,8 @@ export class SentimentAnalysis extends PureComponent {
   handleSubmit(event) {
     event.preventDefault()
 
+    this.setState({ keywordSet: true })
+
     this.props.getSentimentData(this.state.keyword)
   }
 
@@ -157,7 +159,7 @@ export class SentimentAnalysis extends PureComponent {
   }
 
   render() {
-    const { currentModule, twitterData } = this.state
+    const { currentModule, twitterData, keywordSet } = this.state
 
     return (
       <Wrapper>
@@ -201,7 +203,7 @@ export class SentimentAnalysis extends PureComponent {
                   },
                 ],
               }}/>}
-              {currentModule === 'geo' && <ReactMapGL locations={twitterData.locations}/>}
+              {currentModule === 'geo' && <ReactMapGL locations={twitterData.locations} keywordSet={keywordSet}/>}
         </MainModule>
         <Footer>
           <div>
