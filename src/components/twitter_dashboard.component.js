@@ -1,45 +1,111 @@
 import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
+import { FaGlobeAmericas, FaHistory, FaUsers, FaRegChartBar } from 'react-icons/fa'
 
+import RadarChart from './shared/radar_chart.component'
 import { subscribeToStream } from '../socket'
 import { getSentimentData, updateTwitterData, killStream } from '../redux/actions/twitter.actions'
 import { TwitterMap } from '../redux/selectors/index.selectors'
-import TopLocations from './top_locations.component'
-import TopHashtags from './top_hashtags.component'
-import { navy } from '../style/colors'
+import { arctic } from '../style/colors'
 
 const Wrapper = styled.div`
+  height: calc(100vh - 60px);
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
 `
 
 const Header = styled.header`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 50px;
-  margin: 1.5em 0 0 0;
+  margin: 0.75em 2em;
 
   input {
     width: 300px;
+    height: 35px;
     margin: 0 1em;
-  }
+    border: 1px solid lightgrey;
+    border-radius: 2px;
+
+    ::placeholder {
+      color: lightgrey;
+      padding-left: 6px;
+    }
+  } 
 
   button {
     color: white;
-    background: ${navy};
+    background: ${arctic};
     padding: 6px 20px;
     border: none;
     border-radius: 2px;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 `
 
-const LeftColumn = styled.div`
-  width: 200px;
-  margin-left: 1.5em;
+const MainModule = styled.div`
+  svg {
+    max-height: 500px;
+  }
+`
+
+const Footer = styled.footer`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 2em;
+  border-top: 1px solid lightgrey;
+
+  div {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin: 0.75em 0;
+  }
+
+  div > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    span {
+      position: relative
+      color: lightgrey;
+      font-size: 18px;
+
+      &:hover {
+        cursor: pointer;
+      }
+
+    }
+
+    &.active {
+      span {
+        color: turquoise;
+        position: relative;
+
+      }
+      
+      svg {
+        fill: turquoise;
+      }
+    }
+  }
 `
 
 export class SentimentAnalysis extends PureComponent {
@@ -50,27 +116,29 @@ export class SentimentAnalysis extends PureComponent {
     this.handleSubmit = this.handleSubmit.bind(this)
 
     subscribeToStream((error, data) => {
-      error 
-        ? this.props.killStream()
-        : this.props.updateTwitterData(data.twitterData)
+      error ? this.props.killStream() : this.props.updateTwitterData(data.twitterData)
     })
   }
 
   state = {
+    currentModule: 'sentiment',
     keyword: '',
     twitterData: {
       count: 0,
       locations: {},
       languages: {},
-      tweets: [],
+      tweets: []
     }
   }
 
   componentDidUpdate(prevProps) {
-    // Typical usage (don't forget to compare props):
     if (this.props.twitterData !== prevProps.twitterData) {
       this.setState({ twitterData: this.props.twitterData })
     }
+  }
+
+  getClasses(module) {
+    return module === this.state.currentModule ? 'active' : ''
   }
 
   handleChange(event) {
@@ -79,26 +147,83 @@ export class SentimentAnalysis extends PureComponent {
 
   handleSubmit(event) {
     event.preventDefault()
-    console.log('VaLUES', this.state.keyword)
+
     this.props.getSentimentData(this.state.keyword)
   }
 
+  toggleModule(module) {
+    this.setState({ currentModule: module })
+  }
+
   render() {
-    const { tweets } = this.state.twitterData
+    // const { tweets } = this.state.twitterData
 
     return (
       <Wrapper>
         <Header>
           <form onSubmit={this.handleSubmit}>
-            <input type="text" placeholder="Enter a hashtag or keyword" onChange={this.handleChange}/>
-            <button type="submit">Analyze Tweets</button>
+              <input type="text" placeholder="Enter a hashtag or keyword" onChange={this.handleChange} />
+              <button type="submit">Analyze Tweets</button>
           </form>
         </Header>
-        <LeftColumn>
-          <TopLocations />
-          <TopHashtags />
-        </LeftColumn> 
-        {tweets.map(tweet => <p key={tweet.username}>{tweet.text}</p>)}
+        <MainModule>
+          <RadarChart data={{
+                variables: [
+                  {key: 'anger', label: 'Anger'},
+                  {key: 'disgust', label: 'Disgust'},
+                  {key: 'fear', label: 'Fear'},
+                  {key: 'joy', label: 'Joy'},
+                  {key: 'sadness', label: 'Sadness'},
+                ],
+                sets: [
+                  {
+                    key: 'English',
+                    label: 'English',
+                    values: {
+                      anger: 1,
+                      disgust: 1,
+                      fear: 1,
+                      joy: 1,
+                      sadness: 1,
+                    },
+                  },
+                  {
+                    key: 'Spanish',
+                    label: 'Spanish',
+                    values: {
+                      anger: 5,
+                      disgust: 5,
+                      fear: 5,
+                      joy: 5,
+                      sadness: 5,
+                    },
+                  },
+                ],
+              }}/>
+        </MainModule>
+        <Footer>
+          <div>
+            <div onClick={() => this.toggleModule('sentiment')} className={this.getClasses('sentiment')}>
+              <FaUsers color={'lightgrey'} size={'2em'} />
+              <span>Sentiment Analysis</span>
+            </div>
+            <div onClick={() => this.toggleModule('geo')} className={this.getClasses('geo')}>
+              <FaGlobeAmericas color={'lightgrey'} size={'2em'} />
+              <span>Geographic Analysis</span>
+            </div>
+            <div onClick={() => this.toggleModule('history')} className={this.getClasses('history')}>
+              <FaHistory color={'lightgrey'} size={'2em'} />
+              <span>Historical Trends</span>
+            </div>
+            <div onClick={() => this.toggleModule('insights')} className={this.getClasses('insights')}>
+              <FaRegChartBar color={'lightgrey'} size={'2em'} />
+              <span>Data Insights</span>
+            </div>
+          </div>
+        </Footer  >
+        {/* {tweets.map((tweet) => (
+          <p key={tweet.username}>{tweet.text}</p>
+        ))} */}
       </Wrapper>
     )
   }
