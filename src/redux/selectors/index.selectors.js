@@ -1,7 +1,8 @@
-import {initialSentimentState} from '../reducers/sentiment.reducer'
+import { initialTwitterState } from '../reducers/twitter.reducer'
 
-export const sentimentMap = ({ sentimentState = initialSentimentState }) => ({
-  count: sentimentState.count,
-  isIncrementing: sentimentState.isIncrementing,
-  isDecrementing: sentimentState.isDecrementing,
+export const TwitterMap = ({ twitterState = initialTwitterState }) => ({
+  loading: twitterState.loading,
+  error: twitterState.error,
+  sentimentData: twitterState.sentimentData,
+  twitterData: twitterState.twitterData,
 })

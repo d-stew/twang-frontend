@@ -1,13 +1,13 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 
-import { getSentimentData } from '../redux/actions/sentiment.actions'
-import { sentimentMap } from '../redux/selectors/index.selectors'
+import { subscribeToStream } from '../socket'
+import { getSentimentData, updateTwitterData } from '../redux/actions/twitter.actions'
+import { TwitterMap } from '../redux/selectors/index.selectors'
 import TopLocations from './top_locations.component'
 import TopHashtags from './top_hashtags.component'
 import { navy } from '../style/colors'
-
 
 const Wrapper = styled.div`
   display: flex;
@@ -42,11 +42,31 @@ const LeftColumn = styled.div`
   margin-left: 1.5em;
 `
 
-export class SentimentAnalysis extends Component {
+export class SentimentAnalysis extends PureComponent {
   constructor(props) {
     super(props)
 
     this.handleSubmit = this.handleSubmit.bind(this)
+
+    subscribeToStream((error, data) => {
+      this.props.updateTwitterData(data.twitterData)
+    })
+  }
+
+  state = {
+    twitterData: {
+      count: 0,
+      locations: {},
+      languages: {},
+      tweets: [],
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    // Typical usage (don't forget to compare props):
+    if (this.props.twitterData !== prevProps.twitterData) {
+      this.setState({ twitterData: this.props.twitterData })
+    }
   }
 
   handleSubmit(keyword) {
@@ -54,24 +74,28 @@ export class SentimentAnalysis extends Component {
   }
 
   render() {
+    const { tweets } = this.state.twitterData
+
     return (
       <Wrapper>
         <Header>
-          <input placeholder="Enter a hashtag or keyword"></input>
-          <button onClick={this.handleSubmit}>Get Sentiment Data</button>
+          <input placeholder="Enter a hashtag or keyword" />
+          <button onClick={this.handleSubmit}>Analyze Tweets</button>
         </Header>
         <LeftColumn>
           <TopLocations />
           <TopHashtags />
-        </LeftColumn>
+        </LeftColumn> 
+        {tweets && tweets.length && tweets.map(tweet => <p>{tweet.text}</p>)}
       </Wrapper>
     )
   }
 }
 
 export default connect(
-  sentimentMap,
+  TwitterMap,
   {
     getSentimentData,
+    updateTwitterData,
   }
 )(SentimentAnalysis)

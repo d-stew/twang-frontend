@@ -1,8 +1,6 @@
 import { combineReducers } from 'redux'
-import counterReducer from '../redux/reducers/counter.reducer'
-import sentimentReducer from '../redux/reducers/sentiment.reducer'
+import twitterReducer from '../redux/reducers/twitter.reducer'
 
 export default combineReducers({
-  counterReducer,
-  sentimentReducer,
+  twitterState: twitterReducer,
 })

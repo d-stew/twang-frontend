@@ -5,6 +5,7 @@ import { Home } from './components/home.component'
 import SentimentAnalysis from './components/sentiment_analysis.component.js'
 import MainNav from './components/shared/main_nav.component'
 
+
 const App = () => (
   <div>
     <MainNav/>
