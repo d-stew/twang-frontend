@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 
 import { subscribeToStream } from '../socket'
-import { getSentimentData, updateTwitterData } from '../redux/actions/twitter.actions'
+import { getSentimentData, updateTwitterData, killStream } from '../redux/actions/twitter.actions'
 import { TwitterMap } from '../redux/selectors/index.selectors'
 import TopLocations from './top_locations.component'
 import TopHashtags from './top_hashtags.component'
@@ -46,14 +46,18 @@ export class SentimentAnalysis extends PureComponent {
   constructor(props) {
     super(props)
 
+    this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
 
     subscribeToStream((error, data) => {
-      this.props.updateTwitterData(data.twitterData)
+      error 
+        ? this.props.killStream()
+        : this.props.updateTwitterData(data.twitterData)
     })
   }
 
   state = {
+    keyword: '',
     twitterData: {
       count: 0,
       locations: {},
@@ -69,8 +73,14 @@ export class SentimentAnalysis extends PureComponent {
     }
   }
 
-  handleSubmit(keyword) {
-    this.props.getSentimentData(keyword)
+  handleChange(event) {
+    this.setState({ keyword: event.target.value })
+  }
+
+  handleSubmit(event) {
+    event.preventDefault()
+    console.log('VaLUES', this.state.keyword)
+    this.props.getSentimentData(this.state.keyword)
   }
 
   render() {
@@ -79,14 +89,16 @@ export class SentimentAnalysis extends PureComponent {
     return (
       <Wrapper>
         <Header>
-          <input placeholder="Enter a hashtag or keyword" />
-          <button onClick={this.handleSubmit}>Analyze Tweets</button>
+          <form onSubmit={this.handleSubmit}>
+            <input type="text" placeholder="Enter a hashtag or keyword" onChange={this.handleChange}/>
+            <button type="submit">Analyze Tweets</button>
+          </form>
         </Header>
         <LeftColumn>
           <TopLocations />
           <TopHashtags />
         </LeftColumn> 
-        {tweets && tweets.length && tweets.map(tweet => <p>{tweet.text}</p>)}
+        {tweets.map(tweet => <p key={tweet.username}>{tweet.text}</p>)}
       </Wrapper>
     )
   }
@@ -97,5 +109,6 @@ export default connect(
   {
     getSentimentData,
     updateTwitterData,
+    killStream
   }
 )(SentimentAnalysis)
