@@ -35,7 +35,7 @@ export const Home = () => {
     <Wrapper>
       <div>
         <p>
-          <Link to="/sentiment-analysis">Sentiment Analysis</Link>
+          <Link to="/analytics">Sentiment Analysis</Link>
         </p>
       </div>
       <div>

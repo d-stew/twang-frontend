@@ -1,5 +1,5 @@
-import { querySentimentData } from '../../services/twitter.service'
-import { SENTIMENT_DATA_LOADED, SENTIMENT_DATA_LOADING, TWITTER_DATA_LOADED, KILL_STREAM } from '../reducers/twitter.reducer'
+import { querySentimentData } from '../../services/analytics.service'
+import { SENTIMENT_DATA_LOADED, SENTIMENT_DATA_LOADING, ANALYTICS_DATA_LOADED, KILL_STREAM } from '../reducers/analytics.reducer'
 
 export const getSentimentData = (keyword) => async (dispatch) => {
   try {
@@ -13,9 +13,9 @@ export const getSentimentData = (keyword) => async (dispatch) => {
   }
 }
 
-export const updateTwitterData = (twitterData) => async (dispatch) => {
+export const updateAnalyticsData = (analyticsData) => async (dispatch) => {
   try {
-    dispatch({ type: TWITTER_DATA_LOADED, payload: twitterData })
+    dispatch({ type: ANALYTICS_DATA_LOADED, payload: analyticsData })
   } catch (error) {
     console.log(error)
   }

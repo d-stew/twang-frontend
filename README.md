@@ -14,6 +14,8 @@ npm install
 
 Replace `.env.example` with `.env` and add your own environment variables. 
 
+Then run:
+
 ```bash
 npm start
 ```

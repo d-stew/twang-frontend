@@ -5,9 +5,9 @@ import { FaGlobeAmericas, FaHistory, FaUsers, FaRegChartBar } from 'react-icons/
 
 import ReactMapGL from './map.component'
 import RadarChart from './shared/radar_chart.component'
-import { subscribeToStream } from '../socket'
-import { getSentimentData, updateTwitterData, killStream } from '../redux/actions/twitter.actions'
-import { TwitterMap } from '../redux/selectors/index.selectors'
+import { startSocket, subscribeToStream } from '../socket'
+import { getSentimentData, updateAnalyticsData, killStream } from '../redux/actions/analytics.actions'
+import { AnalyticsMap } from '../redux/selectors/index.selectors'
 import { arctic } from '../style/colors'
 
 const Wrapper = styled.div`
@@ -117,7 +117,7 @@ export class SentimentAnalysis extends PureComponent {
     this.handleSubmit = this.handleSubmit.bind(this)
 
     subscribeToStream((error, data) => {
-      error ? this.props.killStream() : this.props.updateTwitterData(data.twitterData)
+      error ? this.props.killStream() : this.props.updateAnalyticsData(data.twitterData)
     })
   }
 
@@ -150,6 +150,7 @@ export class SentimentAnalysis extends PureComponent {
     event.preventDefault()
 
     this.setState({ keywordSet: true })
+    startSocket()
 
     this.props.getSentimentData(this.state.keyword)
   }
@@ -234,10 +235,10 @@ export class SentimentAnalysis extends PureComponent {
 }
 
 export default connect(
-  TwitterMap,
+  AnalyticsMap,
   {
     getSentimentData,
-    updateTwitterData,
+    updateAnalyticsData,
     killStream
   }
 )(SentimentAnalysis)

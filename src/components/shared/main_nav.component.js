@@ -55,7 +55,8 @@ const MainNav = () => (
     <h1>twang</h1>
     <div>
       <Link to="/">Home</Link>
-      <Link to="/sentiment-analysis">Dashboard</Link>
+      <Link to="/user-insights">User Insights</Link>
+      <Link to="/analytics">Real-Time Analytics</Link>
     </div>
   </Wrapper>
 )

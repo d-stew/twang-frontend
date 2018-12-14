@@ -1,8 +1,15 @@
-import { initialTwitterState } from '../reducers/twitter.reducer'
+import { initialAnalyticsState } from '../reducers/analytics.reducer'
+import { initialUserState } from '../reducers/user_insights.reducer'
 
-export const TwitterMap = ({ twitterState = initialTwitterState }) => ({
-  loading: twitterState.loading,
-  error: twitterState.error,
-  sentimentData: twitterState.sentimentData,
-  twitterData: twitterState.twitterData,
+export const AnalyticsMap = ({ analyticsState = initialAnalyticsState }) => ({
+  loading: analyticsState.loading,
+  error: analyticsState.error,
+  sentimentData: analyticsState.sentimentData,
+  twitterData: analyticsState.twitterData,
+})
+
+export const UserMap = ({ userState = initialUserState }) => ({
+  loading: userState.loading,
+  error: userState.error,
+  userData: userState.userData,
 })
