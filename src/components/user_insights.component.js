@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 
 import { getUserData } from '../redux/actions/user_insights.actions'
 import { UserMap } from '../redux/selectors/index.selectors'
+import { TopTweetsTable } from './top_tweets_table.component'
 import { arctic } from '../style/colors'
 
 const Wrapper = styled.div`
@@ -11,6 +12,12 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+`
+
+const MainModule = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
 const Header = styled.header`
@@ -57,6 +64,7 @@ export class UserInsights extends Component {
   state = {
     username: undefined,
     usernameSet: false,
+    userData: undefined
   }
 
   handleChange(event) {
@@ -72,6 +80,10 @@ export class UserInsights extends Component {
   }
 
   render() {
+    const { userData } = this.props
+
+    console.log('USER DATA IN COMPONENT', userData)
+
     return(
       <Wrapper>
         <Header>
@@ -80,6 +92,9 @@ export class UserInsights extends Component {
               <button type="submit">Analyze User</button>
           </form>
         </Header>
+        <MainModule>
+          {userData && <TopTweetsTable userData={userData} />}
+        </MainModule>
       </Wrapper>
     )
   }
