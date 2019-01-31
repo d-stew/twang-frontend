@@ -4,12 +4,13 @@ import { connect } from 'react-redux'
 import { FaGlobeAmericas, FaHistory, FaUsers, FaRegChartBar } from 'react-icons/fa'
 
 import MainNav from '../components/shared/main_nav.component'
+import UserInsights from '../components/user_insights.component'
 import ReactMapGL from './map.component'
-import RadarChart from './shared/radar_chart.component'
 import { startSocket, subscribeToStream } from '../socket'
 import { getSentimentData, updateAnalyticsData, killStream } from '../redux/actions/analytics.actions'
 import { AnalyticsMap } from '../redux/selectors/index.selectors'
-import { arctic } from '../style/colors'
+import { arctic, turquoise } from '../style/colors'
+import {SentimentChart} from './sentiment_chart.component';
 
 const Wrapper = styled.div`
   height: calc(100vh - 60px);
@@ -90,6 +91,16 @@ const SidebarItem = styled.div`
     cursor: pointer;
   }
 
+  &.active {
+    svg {
+      color: ${turquoise} !important;
+    }
+    
+    span {
+      color: ${turquoise};
+    }
+  }
+
   span {
     color: lightgrey;
     margin-left: 0.5em;
@@ -148,12 +159,18 @@ export class SentimentAnalysis extends PureComponent {
   }
 
   render() {
-    const { currentModule, twitterData, keywordSet } = this.state
+    const { currentModule, twitterData, sentimentData, keywordSet } = this.state
+
+    console.log('currentModule', currentModule)
 
     return (
       <Wrapper>
         <MainNav />
         <Sidebar>
+            <SidebarItem onClick={() => this.toggleModule('insights')} className={this.getClasses('insights')}>
+              <FaRegChartBar color={'lightgrey'} size={'2em'} />
+              <span>User Insights</span>
+            </SidebarItem>
             <SidebarItem onClick={() => this.toggleModule('sentiment')} className={this.getClasses('sentiment')}>
               <FaUsers color={'lightgrey'} size={'2em'} />
               <span>Sentiment Analysis</span>
@@ -166,10 +183,6 @@ export class SentimentAnalysis extends PureComponent {
               <FaHistory color={'lightgrey'} size={'2em'} />
               <span>Historical Trends</span>
             </SidebarItem>
-            <SidebarItem onClick={() => this.toggleModule('insights')} className={this.getClasses('insights')}>
-              <FaRegChartBar color={'lightgrey'} size={'2em'} />
-              <span>Data Insights</span>
-            </SidebarItem>
         </Sidebar  >
         <MainModule>
           <Header>
@@ -178,40 +191,9 @@ export class SentimentAnalysis extends PureComponent {
                 <button type="submit">Analyze Tweets</button>
             </form>
           </Header>
-          {currentModule === 'sentiment' && <RadarChart data={{
-                variables: [
-                  {key: 'anger', label: 'Anger'},
-                  {key: 'disgust', label: 'Disgust'},
-                  {key: 'fear', label: 'Fear'},
-                  {key: 'joy', label: 'Joy'},
-                  {key: 'sadness', label: 'Sadness'},
-                ],
-                sets: [
-                  {
-                    key: 'English',
-                    label: 'English',
-                    values: {
-                      anger: 1,
-                      disgust: 1,
-                      fear: 1,
-                      joy: 1,
-                      sadness: 1,
-                    },
-                  },
-                  {
-                    key: 'Spanish',
-                    label: 'Spanish',
-                    values: {
-                      anger: 5,
-                      disgust: 5,
-                      fear: 5,
-                      joy: 5,
-                      sadness: 5,
-                    },
-                  },
-                ],
-              }}/>}
-              {currentModule === 'geo' && <ReactMapGL locations={twitterData.locations} keywordSet={keywordSet}/>}
+          {currentModule === 'insights' && <UserInsights userData={twitterData} />}
+          {currentModule === 'sentiment' && <SentimentChart sentimentData={sentimentData} />}
+          {currentModule === 'geo' && <ReactMapGL locations={twitterData.locations} keywordSet={keywordSet}/>}
         </MainModule>
         {/* {tweets.map((tweet) => (
           <p key={tweet.username}>{tweet.text}</p>

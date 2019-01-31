@@ -172,7 +172,7 @@ export const Home = () => {
       <HeaderRow>
         <Logo>twang</Logo>
         <h1>Twitter analytics made easy.</h1>
-        <p>Real-time insights at the tip of your fingers.</p>
+        <p>Real-time and historical insights at the tip of your fingers.</p>
       </HeaderRow>
       <Row>
         <RowBox>
