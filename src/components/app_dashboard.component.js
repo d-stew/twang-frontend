@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { FaGlobeAmericas, FaHistory, FaUsers, FaRegChartBar } from 'react-icons/fa'
 
+import MainNav from '../components/shared/main_nav.component'
 import ReactMapGL from './map.component'
 import RadarChart from './shared/radar_chart.component'
 import { startSocket, subscribeToStream } from '../socket'
@@ -51,61 +52,48 @@ const Header = styled.header`
 `
 
 const MainModule = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1 100%;
+  justify-content: space-around;
+  align-items: center;
+  margin-left: 350px; 
+
   svg {
     max-height: 500px;
   }
 `
 
-const Footer = styled.footer`
+const Sidebar = styled.div`
+  position: absolute;
+  left: 0;
+  top: 100px;
+  width: 250px;
+  height: calc(100vh - 160px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  margin: 0 2em;
-  border-top: 1px solid lightgrey;
+  border-right: 1px solid lightgrey;
+`
 
-  div {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    margin: 0.75em 0;
+const SidebarItem = styled.div`
+  width: 85%;
+  margin: 0 1em;
+  padding: 15px 0;
+  border-bottom: 1px solid lightgrey;
+
+  &:first-of-type {
+    border-top: 1px solid lightgrey;
   }
 
-  div > div {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  &:hover {
+    cursor: pointer;
+  }
 
-    svg {
-      &:hover {
-        cursor: pointer;
-      }
-    }
-
-    span {
-      position: relative
-      color: lightgrey;
-      font-size: 18px;
-
-      &:hover {
-        cursor: pointer;
-      }
-
-    }
-
-    &.active {
-      span {
-        color: turquoise;
-        position: relative;
-
-      }
-      
-      svg {
-        fill: turquoise;
-      }
-    }
+  span {
+    color: lightgrey;
+    margin-left: 0.5em;
+    font-size: 16px;
   }
 `
 
@@ -164,13 +152,32 @@ export class SentimentAnalysis extends PureComponent {
 
     return (
       <Wrapper>
-        <Header>
-          <form onSubmit={this.handleSubmit}>
-              <input type="text" placeholder="Enter a hashtag or keyword" onChange={this.handleChange} />
-              <button type="submit">Analyze Tweets</button>
-          </form>
-        </Header>
+        <MainNav />
+        <Sidebar>
+            <SidebarItem onClick={() => this.toggleModule('sentiment')} className={this.getClasses('sentiment')}>
+              <FaUsers color={'lightgrey'} size={'2em'} />
+              <span>Sentiment Analysis</span>
+            </SidebarItem>
+            <SidebarItem onClick={() => this.toggleModule('geo')} className={this.getClasses('geo')}>
+              <FaGlobeAmericas color={'lightgrey'} size={'2em'} />
+              <span>Geographic Analysis</span>
+            </SidebarItem>
+            <SidebarItem onClick={() => this.toggleModule('history')} className={this.getClasses('history')}>
+              <FaHistory color={'lightgrey'} size={'2em'} />
+              <span>Historical Trends</span>
+            </SidebarItem>
+            <SidebarItem onClick={() => this.toggleModule('insights')} className={this.getClasses('insights')}>
+              <FaRegChartBar color={'lightgrey'} size={'2em'} />
+              <span>Data Insights</span>
+            </SidebarItem>
+        </Sidebar  >
         <MainModule>
+          <Header>
+            <form onSubmit={this.handleSubmit}>
+                <input type="text" placeholder="Enter a hashtag or keyword" onChange={this.handleChange} />
+                <button type="submit">Analyze Tweets</button>
+            </form>
+          </Header>
           {currentModule === 'sentiment' && <RadarChart data={{
                 variables: [
                   {key: 'anger', label: 'Anger'},
@@ -206,26 +213,6 @@ export class SentimentAnalysis extends PureComponent {
               }}/>}
               {currentModule === 'geo' && <ReactMapGL locations={twitterData.locations} keywordSet={keywordSet}/>}
         </MainModule>
-        <Footer>
-          <div>
-            <div onClick={() => this.toggleModule('sentiment')} className={this.getClasses('sentiment')}>
-              <FaUsers color={'lightgrey'} size={'2em'} />
-              <span>Sentiment Analysis</span>
-            </div>
-            <div onClick={() => this.toggleModule('geo')} className={this.getClasses('geo')}>
-              <FaGlobeAmericas color={'lightgrey'} size={'2em'} />
-              <span>Geographic Analysis</span>
-            </div>
-            <div onClick={() => this.toggleModule('history')} className={this.getClasses('history')}>
-              <FaHistory color={'lightgrey'} size={'2em'} />
-              <span>Historical Trends</span>
-            </div>
-            <div onClick={() => this.toggleModule('insights')} className={this.getClasses('insights')}>
-              <FaRegChartBar color={'lightgrey'} size={'2em'} />
-              <span>Data Insights</span>
-            </div>
-          </div>
-        </Footer  >
         {/* {tweets.map((tweet) => (
           <p key={tweet.username}>{tweet.text}</p>
         ))} */}

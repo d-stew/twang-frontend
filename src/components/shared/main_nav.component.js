@@ -19,45 +19,16 @@ const Wrapper = styled.div`
   a {
     position: relative;
     color: white;
+    font-size: 36px;
     margin: 0 20px;  
     padding: 0 4px 4px;
     text-decoration: none;
-
-    &:hover {
-      color: white;
-    }
-
-    &:before {
-      content: "";
-      position: absolute;
-      width: 100%;
-      height: 2px;
-      bottom: 0;
-      left: 0;
-      background-color: white;
-      visibility: hidden;
-      -webkit-transform: scaleX(0);
-      transform: scaleX(0);
-      -webkit-transition: all 0.2s ease-in-out 0s;
-      transition: all 0.2s ease-in-out 0s;
-    }
-
-    &:hover:before {
-      visibility: visible;
-      -webkit-transform: scaleX(1);
-      transform: scaleX(1);
-    }
   }
 `
 
 const MainNav = () => (
   <Wrapper>
-    <h1>twang</h1>
-    <div>
-      <Link to="/">Home</Link>
-      <Link to="/user-insights">User Insights</Link>
-      <Link to="/analytics">Real-Time Analytics</Link>
-    </div>
+    <Link to="/">twang</Link>
   </Wrapper>
 )
 
