@@ -1,7 +1,6 @@
-import React, { Component } from 'react'
+import React from 'react'
 import Loader from 'react-loaders'
 import { isEmpty } from 'lodash'
-import styled from 'styled-components'
 
 import RadarChart from './shared/radar_chart.component'
 

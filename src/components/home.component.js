@@ -20,7 +20,7 @@ import {
   FaStopwatch
 } from 'react-icons/fa'
 
-import { navy, twitterBlue } from '../style/colors'
+import { twitterBlue } from '../style/colors'
 
 const Wrapper = styled.div`
   display: flex;
