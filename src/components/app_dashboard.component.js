@@ -6,7 +6,7 @@ import { FaGlobeAmericas, FaHistory, FaUsers, FaRegChartBar } from 'react-icons/
 import MainNav from '../components/shared/main_nav.component'
 import UserInsights from '../components/user_insights.component'
 import ReactMapGL from './map.component'
-import { startSocket } from '../socket'
+// import { startSocket } from '../socket'
 import { getSentimentData, updateAnalyticsData, killStream } from '../redux/actions/analytics.actions'
 import { AnalyticsMap } from '../redux/selectors/index.selectors'
 import { arctic, turquoise } from '../style/colors'
@@ -116,7 +116,7 @@ export class SentimentAnalysis extends PureComponent {
     event.preventDefault()
 
     this.setState({ keywordSet: true })
-    startSocket()
+    // startSocket()
 
     this.props.getSentimentData(this.state.keyword)
   }

@@ -3,18 +3,7 @@ import * as dotenv from 'dotenv'
 
 dotenv.config()
 
-const baseUrl = () => {
-  switch(process.env.NODE_ENV) {
-    case 'DEVELOPMENT':
-      console.log('DEVELOPMENT')
-      return 'http://localhost:8080'
-    case 'PRODUCTION':
-      console.log('PRODUCTION')
-      return 'https://twang-api.herokuapp.com'
-    default: 
-      return 'https://twang-api.herokuapp.com'
-  }
-}
+const baseUrl = process.env.NODE_ENV === 'DEVELOPEMNT' ? 'http://localhost:8080' : 'https://twang-api.herokuapp.com'
 
 axios.defaults.baseURL = baseUrl()
 
