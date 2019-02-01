@@ -1,23 +1,31 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
+import { isEmpty } from 'lodash'
 
+import { RaisedHandBlob } from '../style/assets/blob_raised_hand'
 import { getUserData } from '../redux/actions/user_insights.actions'
 import { UserMap } from '../redux/selectors/index.selectors'
-import { TopTweetsTable } from './top_tweets_table.component'
-import { arctic } from '../style/colors'
+import { TopTweetsTable } from './top_tweets_module.component'
+import { arctic, navy } from '../style/colors'
 
 const Wrapper = styled.div`
-  height: calc(100vh - 60px);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  height: 100vh;
+  overflow-y: scroll;
+
+  svg {
+    max-height: 250px !important;
+  }
+
+  h3 {
+    color: ${navy};
+  }
 `
 
 const MainModule = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
+  overflow-y: scroll;
 `
 
 const Header = styled.header`
@@ -25,7 +33,20 @@ const Header = styled.header`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 0.75em 2em;
+  margin: 1.25em 2em;
+
+  .placeholder {
+    position: relative;
+  }
+
+  .placeholder::after {
+    color: gray;
+    position: absolute;
+    left: 24px;
+    top: 5px;
+    content: attr(data-placeholder);
+    pointer-events: none;
+  }
 
   input {
     width: 300px;
@@ -33,12 +54,14 @@ const Header = styled.header`
     margin: 0 1em;
     border: 1px solid lightgrey;
     border-radius: 2px;
+    text-indent: 24px;
 
     ::placeholder {
       color: lightgrey;
       padding-left: 6px;
+      text-indent: 0;
     }
-  } 
+  }
 
   button {
     color: white;
@@ -51,6 +74,10 @@ const Header = styled.header`
       cursor: pointer;
     }
   }
+`
+
+const EmptyStateModule = styled.div`
+  margin-top: 150px;
 `
 
 export class UserInsights extends Component {
@@ -84,17 +111,22 @@ export class UserInsights extends Component {
 
     console.log('USER DATA IN COMPONENT', userData)
 
-    return(
+    return (
       <Wrapper>
         <Header>
-          <form onSubmit={this.handleSubmit}>
-              <input type="text" placeholder="Search by username" onChange={this.handleChange} />
-              <button type="submit">Analyze User</button>
+          <form onSubmit={this.handleSubmit} class="placeholder" data-placeholder="@">
+            <input type="text" onChange={this.handleChange} />
+            <button type="submit">Analyze User</button>
           </form>
         </Header>
-        <MainModule>
-          {userData && <TopTweetsTable userData={userData} />}
-        </MainModule>
+        {isEmpty(userData) ? (
+          <EmptyStateModule>
+            <RaisedHandBlob color={arctic} />
+            <h3>Hey bubba! Search for a username above to get started.</h3>
+          </EmptyStateModule>
+        ) : (
+          <MainModule>{userData && <TopTweetsTable userData={userData} />}</MainModule>
+        )}
       </Wrapper>
     )
   }

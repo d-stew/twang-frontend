@@ -13,7 +13,7 @@ import { arctic, turquoise } from '../style/colors'
 import {SentimentChart} from './sentiment_chart.component';
 
 const Wrapper = styled.div`
-  height: calc(100vh - 60px);
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -53,12 +53,13 @@ const Header = styled.header`
 `
 
 const MainModule = styled.div`
+  height: 100vh;
   display: flex;
   flex-direction: column;
   flex: 1 100%;
   justify-content: space-around;
   align-items: center;
-  margin-left: 350px; 
+  margin-left: 250px;
 
   svg {
     max-height: 500px;
@@ -68,13 +69,13 @@ const MainModule = styled.div`
 const Sidebar = styled.div`
   position: absolute;
   left: 0;
-  top: 100px;
   width: 250px;
-  height: calc(100vh - 160px);
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   border-right: 1px solid lightgrey;
+  padding-top: 115px;
 `
 
 const SidebarItem = styled.div`
@@ -121,7 +122,7 @@ export class SentimentAnalysis extends PureComponent {
   }
 
   state = {
-    currentModule: 'sentiment',
+    currentModule: 'insights',
     keyword: '',
     twitterData: {
       count: 0,
@@ -185,12 +186,12 @@ export class SentimentAnalysis extends PureComponent {
             </SidebarItem>
         </Sidebar  >
         <MainModule>
-          <Header>
+          {/* <Header>
             <form onSubmit={this.handleSubmit}>
                 <input type="text" placeholder="Enter a hashtag or keyword" onChange={this.handleChange} />
                 <button type="submit">Analyze Tweets</button>
             </form>
-          </Header>
+          </Header> */}
           {currentModule === 'insights' && <UserInsights userData={twitterData} />}
           {currentModule === 'sentiment' && <SentimentChart sentimentData={sentimentData} />}
           {currentModule === 'geo' && <ReactMapGL locations={twitterData.locations} keywordSet={keywordSet}/>}

@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import { navy } from '../../style/colors'
 
 const Wrapper = styled.div`
+  z-index: 1000;
   background: ${navy};
   height: 60px;
   display: flex;
