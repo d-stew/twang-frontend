@@ -15,10 +15,11 @@ const Wrapper = styled.div`
 `
 
 const Header = styled.div`
+  width: 100%;
   position: relative;
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   padding: 1.25em;
 
