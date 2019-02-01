@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { sortBy } from 'lodash'
 
 import { TopTweet } from './top_tweet.component'
 
@@ -15,7 +16,7 @@ export const TopTweets = (props) => {
 
   return (
     <Wrapper>
-      {userData.topTweets.map((tweet, i) => {
+      {sortBy(userData.topTweets, [(o) => { return o.favorites + o.retweets }]).map((tweet, i) => {
         return <TopTweet key={`top-tweet-${i}`} tweet={tweet} userData={userData} />
       })}
     </Wrapper>
