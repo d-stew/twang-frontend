@@ -6,9 +6,10 @@ import { navy } from '../style/colors'
 const Wrapper = styled.div`
   margin: auto;
 
-  h2 {
-    font-size: 18px;
+  h6 {
+    font-size: 12px;
     color: ${navy};
+    margin: 0.25em 0;
   }
 `
 
@@ -33,15 +34,19 @@ const Thermometer = styled.div`
 const Block = styled.div`
   height: 25px;
   width: 40px;
-  border: 2px solid ${navy};
+  border: 1px solid ${navy};
   border-right: none;
 
   &:first-of-type {
     border-radius: 40px 0 0 40px;
   }
+
+  &:nth-of-type(5) {
+    border-right: 2px solid black;
+  }
   
   &:last-of-type {
-    border-right: 2px solid ${navy};
+    border-right: 1px solid ${navy};
     border-radius: 0 40px 40px 0;
   }
 `
@@ -51,7 +56,7 @@ export const SentimentThermometer = (props) => {
 
     return(
       <Wrapper>
-        <h2>Overall Sentiment</h2>
+        <h6>OVERALL SENTIMENT</h6>
         <Labels>
           <Label>Negative</Label>
           <Label>Neutral</Label>
