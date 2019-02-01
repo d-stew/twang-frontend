@@ -6,7 +6,7 @@ import { FaGlobeAmericas, FaHistory, FaUsers, FaRegChartBar } from 'react-icons/
 import MainNav from '../components/shared/main_nav.component'
 import UserInsights from '../components/user_insights.component'
 import ReactMapGL from './map.component'
-import { startSocket, subscribeToStream } from '../socket'
+import { startSocket } from '../socket'
 import { getSentimentData, updateAnalyticsData, killStream } from '../redux/actions/analytics.actions'
 import { AnalyticsMap } from '../redux/selectors/index.selectors'
 import { arctic, turquoise } from '../style/colors'
@@ -18,39 +18,6 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
 `
-
-// const Header = styled.header`
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   justify-content: center;
-//   margin: 0.75em 2em;
-
-//   input {
-//     width: 300px;
-//     height: 35px;
-//     margin: 0 1em;
-//     border: 1px solid lightgrey;
-//     border-radius: 2px;
-
-//     ::placeholder {
-//       color: lightgrey;
-//       padding-left: 6px;
-//     }
-//   } 
-
-//   button {
-//     color: white;
-//     background: ${arctic};
-//     padding: 6px 20px;
-//     border: none;
-//     border-radius: 2px;
-
-//     &:hover {
-//       cursor: pointer;
-//     }
-//   }
-// `
 
 const MainModule = styled.div`
   height: 100vh;
@@ -115,9 +82,9 @@ export class SentimentAnalysis extends PureComponent {
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
 
-    subscribeToStream((error, data) => {
-      error ? this.props.killStream() : this.props.updateAnalyticsData(data.twitterData)
-    })
+    // subscribeToStream((error, data) => {
+    //   error ? this.props.killStream() : this.props.updateAnalyticsData(data.twitterData)
+    // })
   }
 
   state = {
@@ -185,19 +152,10 @@ export class SentimentAnalysis extends PureComponent {
             </SidebarItem>
         </Sidebar  >
         <MainModule>
-          {/* <Header>
-            <form onSubmit={this.handleSubmit}>
-                <input type="text" placeholder="Enter a hashtag or keyword" onChange={this.handleChange} />
-                <button type="submit">Analyze Tweets</button>
-            </form>
-          </Header> */}
           {currentModule === 'insights' && <UserInsights userData={twitterData} />}
           {currentModule === 'sentiment' && <SentimentChart sentimentData={sentimentData} />}
           {currentModule === 'geo' && <ReactMapGL locations={twitterData.locations} keywordSet={keywordSet}/>}
         </MainModule>
-        {/* {tweets.map((tweet) => (
-          <p key={tweet.username}>{tweet.text}</p>
-        ))} */}
       </Wrapper>
     )
   }
