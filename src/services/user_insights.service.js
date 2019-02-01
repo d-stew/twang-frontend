@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export const queryUserData = async (username) => {
-  const response = await axios.get('/twitter/user/timeline', {
+  const response = await axios.get('/twitter/user/insights', {
     params: {
       username
     }

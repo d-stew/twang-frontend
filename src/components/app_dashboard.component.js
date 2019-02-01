@@ -74,25 +74,24 @@ const Sidebar = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-right: 1px solid lightgrey;
-  padding-top: 115px;
+  padding: 115px 0 0 10px;
+  background: ${arctic};
 `
 
 const SidebarItem = styled.div`
-  width: 85%;
+  color: white;
+  width: 100%;
   margin: 0 1em;
-  padding: 15px 0;
-  border-bottom: 1px solid lightgrey;
-
-  &:first-of-type {
-    border-top: 1px solid lightgrey;
-  }
+  padding: 15px 0 15px 20px;
+  border-radius: 50px 0 0 50px; 
 
   &:hover {
     cursor: pointer;
   }
 
   &.active {
+    background: white;
+
     svg {
       color: ${turquoise} !important;
     }
@@ -103,7 +102,7 @@ const SidebarItem = styled.div`
   }
 
   span {
-    color: lightgrey;
+    color: white;
     margin-left: 0.5em;
     font-size: 16px;
   }
@@ -169,19 +168,19 @@ export class SentimentAnalysis extends PureComponent {
         <MainNav />
         <Sidebar>
             <SidebarItem onClick={() => this.toggleModule('insights')} className={this.getClasses('insights')}>
-              <FaRegChartBar color={'lightgrey'} size={'2em'} />
+              <FaRegChartBar color={'white'} size={'2em'} />
               <span>User Insights</span>
             </SidebarItem>
             <SidebarItem onClick={() => this.toggleModule('sentiment')} className={this.getClasses('sentiment')}>
-              <FaUsers color={'lightgrey'} size={'2em'} />
+              <FaUsers color={'white'} size={'2em'} />
               <span>Sentiment Analysis</span>
             </SidebarItem>
             <SidebarItem onClick={() => this.toggleModule('geo')} className={this.getClasses('geo')}>
-              <FaGlobeAmericas color={'lightgrey'} size={'2em'} />
+              <FaGlobeAmericas color={'white'} size={'2em'} />
               <span>Geographic Analysis</span>
             </SidebarItem>
             <SidebarItem onClick={() => this.toggleModule('history')} className={this.getClasses('history')}>
-              <FaHistory color={'lightgrey'} size={'2em'} />
+              <FaHistory color={'white'} size={'2em'} />
               <span>Historical Trends</span>
             </SidebarItem>
         </Sidebar  >

@@ -3,12 +3,12 @@ import styled from 'styled-components'
 
 import { TopTweet } from './top_tweet.component'
 
-const Wrapper = styled.table`
+const Wrapper = styled.div`
   width: 90%;
   margin: 0 1em;
 `
 
-export const TopTweetsTable = (props) => {
+export const TopTweets = (props) => {
   const { userData } = props
 
   console.log('PIC URL', userData.profilePicUrl)
