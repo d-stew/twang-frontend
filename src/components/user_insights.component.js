@@ -2,16 +2,17 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { isEmpty } from 'lodash'
+import Loader from 'react-loaders'
 
 import { RaisedHandBlob } from '../style/assets/blob_raised_hand'
 import { getUserData } from '../redux/actions/user_insights.actions'
 import { UserMap } from '../redux/selectors/index.selectors'
 import { TopTweets } from './top_tweets_module.component'
-import { arctic, navy } from '../style/colors'
+import { arctic, navy, turquoise } from '../style/colors'
 
 const Wrapper = styled.div`
   width: 100%;
-  height: calc(100vh - 60px);
+  height: 100vh;
   overflow: auto;
   display: flex;
   flex-direction: column;
@@ -35,10 +36,10 @@ const Header = styled.div`
 
   span {
     font-size: 18px;
-    font-weight: 400;
+    font-weight: 300;
     position: relative;
     color: ${navy};
-    margin: 0 20px;  
+    margin: 0 20px;
     padding: 0 4px 4px;
     text-decoration: none;
 
@@ -54,13 +55,13 @@ const Header = styled.div`
     }
 
     &:before {
-      content: "";
+      content: '';
       position: absolute;
       width: 100%;
       height: 2px;
       bottom: 0;
       left: 0;
-      background-color: ${navy};
+      background-color: ${arctic};
       visibility: hidden;
       -webkit-transform: scaleX(0);
       transform: scaleX(0);
@@ -135,6 +136,16 @@ const EmptyStateModule = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;  
+  text-align: center;
+
+  div > h3 {
+    color: ${navy};
+
+    &:first-of-type {
+      color: ${arctic};
+    }
+  }
 `
 
 export class UserInsights extends Component {
@@ -174,14 +185,20 @@ export class UserInsights extends Component {
 
   render() {
     const { userData } = this.props
-    const { submodule } = this.state
+    const { submodule, usernameSet } = this.state
 
     return (
       <Wrapper>
         <Header>
-          <span onClick={() => this.toggleSubmodule('topTweets')} className={this.getClasses('topTweets')}>TOP TWEETS</span>
-          <span onClick={() => this.toggleSubmodule('userGrowth')} className={this.getClasses('userGrowth')}>USER GROWTH</span>
-          <span onClick={() => this.toggleSubmodule('timing')} className={this.getClasses('timing')}>FREQUENCY & TIMING</span>
+          <span onClick={() => this.toggleSubmodule('topTweets')} className={this.getClasses('topTweets')}>
+            TOP TWEETS
+          </span>
+          <span onClick={() => this.toggleSubmodule('userGrowth')} className={this.getClasses('userGrowth')}>
+            USER GROWTH
+          </span>
+          <span onClick={() => this.toggleSubmodule('timing')} className={this.getClasses('timing')}>
+            FREQUENCY & TIMING
+          </span>
           <HeaderInput>
             <form onSubmit={this.handleSubmit} className="placeholder" data-placeholder="@">
               <input type="text" onChange={this.handleChange} />
@@ -191,13 +208,21 @@ export class UserInsights extends Component {
         </Header>
         {isEmpty(userData) ? (
           <EmptyStateModule>
-            <RaisedHandBlob color={arctic} />
-            <h3>Howdy, bubba! Search for a username above to get started.</h3>
+            {usernameSet ? (
+              <>
+                <Loader type="pacman" />
+                <h3>Consuming tweets...nom nom nom...</h3>
+              </>
+            ) : (
+              <div>
+                <h3>Howdy, bubba!</h3>
+                <h3>Search for a username above to get started.</h3>
+                <RaisedHandBlob color={arctic} />
+              </div>
+            )}
           </EmptyStateModule>
         ) : (
-          <MainModule>
-            {submodule === 'topTweets' && <TopTweets userData={userData} />}
-          </MainModule>
+          <MainModule>{submodule === 'topTweets' && <TopTweets userData={userData} />}</MainModule>
         )}
       </Wrapper>
     )

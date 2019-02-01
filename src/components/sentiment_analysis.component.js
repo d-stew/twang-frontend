@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { Component } from 'react'
 import styled from 'styled-components'
 
 import RadarChart from './shared/radar_chart.component'
 import { SentimentThermometer } from './sentiment_thermometer.component'
-import { arctic } from '../style/colors'
+import { navy, arctic, turquoise } from '../style/colors'
 
 const Wrapper = styled.div`
   height: 100%;
@@ -11,16 +11,69 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: center;  
 `
 
-const Header = styled.header`
-  width: 100%;
+const Header = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  padding: 1.25em;
+
+  span {
+    font-size: 18px;
+    font-weight: 300;
+    position: relative;
+    color: ${navy};
+    margin: 0 20px;  
+    padding: 0 4px 4px;
+    text-decoration: none;
+
+    &.active:before {
+      visibility: visible;
+      -webkit-transform: scaleX(1);
+      transform: scaleX(1);
+    }
+
+    &.inactive {
+      color: lightgrey;
+    }
+
+    &.live:hover {
+      cursor: pointer;
+      color: ${navy};
+    }
+
+    &:before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: ${arctic};
+      visibility: hidden;
+      -webkit-transform: scaleX(0);
+      transform: scaleX(0);
+      -webkit-transition: all 0.2s ease-in-out 0s;
+      transition: all 0.2s ease-in-out 0s;
+    }
+
+    &.live:hover:before {
+      visibility: visible;
+      -webkit-transform: scaleX(1);
+      transform: scaleX(1);
+    }
+  }
+`
+
+const HeaderInput = styled.header`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1.25em 2em;
-  padding: 1.5em 0;
 
   .placeholder {
     position: relative;
@@ -42,7 +95,7 @@ const Header = styled.header`
     padding: 20px 0;
     border: 1px solid lightgrey;
     border-radius: 25px;
-    text-indent: 30px;
+    text-indent: 32px;
 
     ::placeholder {
       color: lightgrey;
@@ -64,153 +117,199 @@ const Header = styled.header`
   }
 `
 
-const ChartRow = styled.div`
-  width: 100%;
+const ChartContainer = styled.div`
+  height: 100vh;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+`
+
+const Row = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  align-items: center;
+  flex: 1 100%;
+  padding: 15px;
+  border-bottom: 2px solid lightgrey;
 
-  div {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  svg {
+    width: 250px !important;
+    padding: 1em;
+    border: 1px 1px 0 0 solid gray;
+  }
 
-    svg {
-      margin: 2.5em 2.5em 0.25em 2.5em;
-      padding: 1em;
-      border: 1px 1px 0 0 solid gray;
-    }
+  h4 {
+    margin: 0.25em 0;
+  }
 
-    h4 {
-      margin: 0.25em 0;
-    }
+  p {
+    margin: 0;
+  }
 
-    p {
-      margin: 0;
-    }
+  &:last-of-type {
+    border-bottom: none;  
   }
 `
 
-const Chart = styled.div`
-  padding: 15px;
-`
+export default class SentimentAnalysis extends Component {
+  constructor(props) {
+    super(props)
+  }
 
-export const SentimentChart = () => {
-  return (
-    <Wrapper>
-      <Header>
-        <form className="placeholder" data-placeholder="#">
-          <input type="text" />
-          <button type="submit">Analyze Hashtag</button>
-        </form>
-      </Header>
-      <SentimentThermometer score={7.5} />
-      <ChartRow>
-        <Chart>
-          <RadarChart height={185} width={185} data={{
-            variables: [
-              {key: 'anger', label: 'Anger'},
-              {key: 'disgust', label: 'Disgust'},
-              {key: 'fear', label: 'Fear'},
-              {key: 'joy', label: 'Joy'},
-              {key: 'sadness', label: 'Sadness'},
-            ],
-            sets: [
-              {
-                key: 'English',
-                label: 'English',
-                values: {
-                  anger: 5,
-                  disgust: 5,
-                  fear: 5,
-                  joy: 5,
-                  sadness: 5,
+  state = {
+    submodule: 'today'
+  }
+
+  getClasses(submodule) {
+    if (submodule === 'realTime') {
+      return 'inactive'
+    }
+    return this.state.submodule === submodule ? 'active' : 'live'
+  }
+
+  toggleSubmodule(submodule) {
+    this.setState({ submodule })
+  }
+
+  render() {
+    return (
+      <Wrapper>
+        <Header>
+          <span onClick={() => this.toggleSubmodule('today')} className={this.getClasses('today')}>TODAY</span>
+          <span onClick={() => this.toggleSubmodule('month')} className={this.getClasses('month')}>THIS MONTH</span>
+          <span onClick={() => this.toggleSubmodule('year')} className={this.getClasses('year')}>THIS YEAR</span>
+          <span onClick={() => this.toggleSubmodule('realTime')} className={this.getClasses('realTime')}>REAL-TIME</span>
+          <HeaderInput>
+            <form className="placeholder" data-placeholder="#">
+              <input type="text" />
+              <button type="submit">Analyze Hashtag</button>
+            </form>
+          </HeaderInput>
+        </Header>
+        <ChartContainer>
+
+          <Row>
+            <RadarChart height={150} width={150} data={{
+              variables: [
+                {key: 'anger', label: 'Anger'},
+                {key: 'disgust', label: 'Disgust'},
+                {key: 'fear', label: 'Fear'},
+                {key: 'joy', label: 'Joy'},
+                {key: 'sadness', label: 'Sadness'},
+              ],
+              sets: [
+                {
+                  key: 'English',
+                  label: 'English',
+                  values: {
+                    anger: 5,
+                    disgust: 5,
+                    fear: 5,
+                    joy: 5,
+                    sadness: 5,
+                  },
                 },
-              },
-            ],
-          }}/>
-          <h4>English</h4>
-          <p>{0} tweets</p>
-        </Chart>
-        <Chart>
-          <RadarChart height={185} width={185} data={{
-            variables: [
-              {key: 'anger', label: 'Anger'},
-              {key: 'disgust', label: 'Disgust'},
-              {key: 'fear', label: 'Fear'},
-              {key: 'joy', label: 'Joy'},
-              {key: 'sadness', label: 'Sadness'},
-            ],
-            sets: [
-              {
-                key: 'Spanish',
-                label: 'Spanish',
-                values: {
-                  anger: 5,
-                  disgust: 5,
-                  fear: 5,
-                  joy: 5,
-                  sadness: 5,
+              ],
+            }}/>
+            <div>
+              <h4>English</h4>
+              <p>0 tweets</p>
+            </div>
+            <SentimentThermometer score={7.5} />
+          </Row>
+
+          <Row>
+            <RadarChart height={150} width={150} data={{
+              variables: [
+                {key: 'anger', label: 'Anger'},
+                {key: 'disgust', label: 'Disgust'},
+                {key: 'fear', label: 'Fear'},
+                {key: 'joy', label: 'Joy'},
+                {key: 'sadness', label: 'Sadness'},
+              ],
+              sets: [
+                {
+                  key: 'Spanish',
+                  label: 'Spanish',
+                  values: {
+                    anger: 5,
+                    disgust: 5,
+                    fear: 5,
+                    joy: 5,
+                    sadness: 5,
+                  },
                 },
-              },
-            ],
-          }}/>
-          <h4>Spanish</h4>
-          <p>{0} tweets</p>
-        </Chart>
-        <Chart>
-          <RadarChart height={185} width={185} data={{
-            variables: [
-              {key: 'anger', label: 'Anger'},
-              {key: 'disgust', label: 'Disgust'},
-              {key: 'fear', label: 'Fear'},
-              {key: 'joy', label: 'Joy'},
-              {key: 'sadness', label: 'Sadness'},
-            ],
-            sets: [
-              {
-                key: 'French',
-                label: 'French',
-                values: {
-                  anger: 5,
-                  disgust: 5,
-                  fear: 5,
-                  joy: 5,
-                  sadness: 5,
+              ],
+            }}/>
+            <div>
+              <h4>Spanish</h4>
+              <p>0 tweets</p>
+            </div>
+            <SentimentThermometer score={7.5} />
+          </Row>
+
+          <Row>
+            <RadarChart height={150} width={150} data={{
+              variables: [
+                {key: 'anger', label: 'Anger'},
+                {key: 'disgust', label: 'Disgust'},
+                {key: 'fear', label: 'Fear'},
+                {key: 'joy', label: 'Joy'},
+                {key: 'sadness', label: 'Sadness'},
+              ],
+              sets: [
+                {
+                  key: 'French',
+                  label: 'French',
+                  values: {
+                    anger: 5,
+                    disgust: 5,
+                    fear: 5,
+                    joy: 5,
+                    sadness: 5,
+                  },
                 },
-              },
-            ],
-          }}/>
-          <h4>French</h4>
-          <p>{0} tweets</p>
-        </Chart>
-        <Chart>
-          <RadarChart height={185} width={185} data={{
-            variables: [
-              {key: 'anger', label: 'Anger'},
-              {key: 'disgust', label: 'Disgust'},
-              {key: 'fear', label: 'Fear'},
-              {key: 'joy', label: 'Joy'},
-              {key: 'sadness', label: 'Sadness'},
-            ],
-            sets: [
-              {
-                key: 'Chinese (Mandarin)',
-                label: 'Chinese',
-                values: {
-                  anger: 5,
-                  disgust: 5,
-                  fear: 5,
-                  joy: 5,
-                  sadness: 5,
+              ],
+            }}/>
+            <div>
+              <h4>French</h4>
+              <p>0 tweets</p>
+            </div>
+            <SentimentThermometer score={7.5} />
+          </Row>
+
+          <Row>
+            <RadarChart height={150} width={150} data={{
+              variables: [
+                {key: 'anger', label: 'Anger'},
+                {key: 'disgust', label: 'Disgust'},
+                {key: 'fear', label: 'Fear'},
+                {key: 'joy', label: 'Joy'},
+                {key: 'sadness', label: 'Sadness'},
+              ],
+              sets: [
+                {
+                  key: 'Chinese (Mandarin)',
+                  label: 'Chinese',
+                  values: {
+                    anger: 5,
+                    disgust: 5,
+                    fear: 5,
+                    joy: 5,
+                    sadness: 5,
+                  },
                 },
-              },
-            ],
-          }}/>
-          <h4>Mandarin</h4>
-          <p>{0} tweets</p>
-        </Chart>
-      </ChartRow>
-    </Wrapper>    
-  )
+              ],
+            }}/>
+            <div>
+              <h4>Mandarin</h4>
+              <p>0 tweets</p>
+            </div>
+            <SentimentThermometer score={7.5} />
+          </Row>  
+
+        </ChartContainer>
+      </Wrapper>    
+    )
+  }
 }

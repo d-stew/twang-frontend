@@ -2,7 +2,7 @@ import React from 'react'
 
 export const RaisedHandBlob = (props) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="-30 -210 2570 2248">
+    <svg version="1.1" viewBox="-30 -210 2570 2248">
       <g transform="matrix(1 0 0 -1 0 1638)">
         <path fill={props.color}
           d="M922 807q0 36 -22 58t-55 22q-47 0 -87 -42q-40 -40 -40 -90q0 -36 22.5 -57.5t55.5 -21.5q49 0 88 41q38 39 38 90zM1606 547q0 26 -8.5 47.5t-24.5 41.5q-32 40 -75 40q-21 0 -38 -9t-29.5 -24.5t-19 -36t-6.5 -42.5q0 -27 9 -50t24 -39.5t34.5 -26t40.5 -9.5

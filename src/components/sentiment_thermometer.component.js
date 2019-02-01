@@ -4,10 +4,7 @@ import styled from 'styled-components'
 import { navy } from '../style/colors'
 
 const Wrapper = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  margin: auto;
 
   h2 {
     font-size: 18px;
@@ -16,7 +13,7 @@ const Wrapper = styled.div`
 `
 
 const Labels = styled.div`
-  width: 800px;
+  width: 400px;
   display: flex;
   justify-content: space-between;
   color: black;
@@ -34,8 +31,8 @@ const Thermometer = styled.div`
 `
 
 const Block = styled.div`
-  height: 35px;
-  width: 80px;
+  height: 25px;
+  width: 40px;
   border: 2px solid ${navy};
   border-right: none;
 
