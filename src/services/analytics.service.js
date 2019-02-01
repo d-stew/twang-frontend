@@ -1,20 +1,19 @@
 import axios from 'axios'
 
-axios.defaults.baseURL = getApiUrl()
-
-const getApiUrl = () => {
+const baseUrl = () => {
   switch(process.env.NODE_ENV) {
     case 'DEVELOPMENT':
       console.log('DEVELOPMENT')
       return 'http://localhost:8080'
     case 'PRODUCTION':
       console.log('PRODUCTION')
-      return 'http://twang-api.herokuapp.com'
+      return 'https://twang-api.herokuapp.com'
     default: 
-      'http://localhost:8080'
-    break;
+      return 'http://localhost:8080'
   }
 }
+
+axios.defaults.baseURL = baseUrl()
 
 export const querySentimentData = async (keyword) => {
   const response = await axios.get('/twitter/open-stream', {

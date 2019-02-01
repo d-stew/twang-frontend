@@ -19,38 +19,38 @@ const Wrapper = styled.div`
   justify-content: space-between;
 `
 
-const Header = styled.header`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 0.75em 2em;
+// const Header = styled.header`
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: center;
+//   margin: 0.75em 2em;
 
-  input {
-    width: 300px;
-    height: 35px;
-    margin: 0 1em;
-    border: 1px solid lightgrey;
-    border-radius: 2px;
+//   input {
+//     width: 300px;
+//     height: 35px;
+//     margin: 0 1em;
+//     border: 1px solid lightgrey;
+//     border-radius: 2px;
 
-    ::placeholder {
-      color: lightgrey;
-      padding-left: 6px;
-    }
-  } 
+//     ::placeholder {
+//       color: lightgrey;
+//       padding-left: 6px;
+//     }
+//   } 
 
-  button {
-    color: white;
-    background: ${arctic};
-    padding: 6px 20px;
-    border: none;
-    border-radius: 2px;
+//   button {
+//     color: white;
+//     background: ${arctic};
+//     padding: 6px 20px;
+//     border: none;
+//     border-radius: 2px;
 
-    &:hover {
-      cursor: pointer;
-    }
-  }
-`
+//     &:hover {
+//       cursor: pointer;
+//     }
+//   }
+// `
 
 const MainModule = styled.div`
   height: 100vh;

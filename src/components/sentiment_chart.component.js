@@ -1,6 +1,4 @@
 import React from 'react'
-import Loader from 'react-loaders'
-import { isEmpty } from 'lodash'
 import styled from 'styled-components'
 
 import RadarChart from './shared/radar_chart.component'
@@ -14,7 +12,6 @@ const Wrapper = styled.div`
 `
 
 export const SentimentChart = (props) => {
-  const { sentimentData } = props
 
   return (
     <Wrapper>
@@ -51,7 +48,6 @@ export const SentimentChart = (props) => {
           },
         ],
       }}/>
-      <Loader type="pacman" />
     </Wrapper>    
   )
 }
