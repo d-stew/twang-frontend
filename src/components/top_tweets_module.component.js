@@ -14,7 +14,7 @@ export const TopTweets = (props) => {
 
   return (
     <Wrapper>
-      {sortBy(userData.topTweets, [(o) => { return o.favorites + o.retweets }]).map((tweet, i) => {
+      {sortBy(userData.topTweets, [(o) => { return -(o.favorites + o.retweets) }]).map((tweet, i) => {
         return <TopTweet key={`top-tweet-${i}`} tweet={tweet} userData={userData} />
       })}
     </Wrapper>

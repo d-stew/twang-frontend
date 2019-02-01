@@ -3,20 +3,64 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { FaGlobeAmericas, FaHistory, FaUsers, FaRegChartBar } from 'react-icons/fa'
 
+import ReactMapGL from './map.component'
 import MainNav from '../components/shared/main_nav.component'
 import UserInsights from '../components/user_insights.component'
-import ReactMapGL from './map.component'
-// import { startSocket } from '../socket'
-import { getSentimentData, updateAnalyticsData, killStream } from '../redux/actions/analytics.actions'
 import { AnalyticsMap } from '../redux/selectors/index.selectors'
-import { arctic, turquoise } from '../style/colors'
-import {SentimentChart} from './sentiment_chart.component';
+import { SentimentChart } from './sentiment_analysis.component'
+import { arctic, turquoise, navy } from '../style/colors'
+import { getSentimentData, updateAnalyticsData, killStream } from '../redux/actions/analytics.actions'
+// import { startSocket } from '../socket'
 
 const Wrapper = styled.div`
   height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+`
+const Sidebar = styled.div`
+  position: absolute;
+  left: 0;
+  width: 250px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 115px 0 0 10px;
+  background: ${arctic};
+  border-right: 2px solid ${navy};
+`
+
+const SidebarItem = styled.div`
+  color: white;
+  width: 100%;
+  margin: 0 1em;
+  padding: 15px 0 15px 20px;
+  border-radius: 50px 0 0 50px;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &.active {
+    background: white;
+    border: 2px solid ${navy};
+    border-right: none;
+
+    svg {
+      color: ${turquoise} !important;
+    }
+
+    span {
+      color: ${turquoise};
+    }
+  }
+
+  span {
+    color: white;
+    margin-left: 0.5em;
+    font-size: 16px;
+  }
 `
 
 const MainModule = styled.div`
@@ -33,48 +77,6 @@ const MainModule = styled.div`
   }
 `
 
-const Sidebar = styled.div`
-  position: absolute;
-  left: 0;
-  width: 250px;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 115px 0 0 10px;
-  background: ${arctic};
-`
-
-const SidebarItem = styled.div`
-  color: white;
-  width: 100%;
-  margin: 0 1em;
-  padding: 15px 0 15px 20px;
-  border-radius: 50px 0 0 50px; 
-
-  &:hover {
-    cursor: pointer;
-  }
-
-  &.active {
-    background: white;
-
-    svg {
-      color: ${turquoise} !important;
-    }
-    
-    span {
-      color: ${turquoise};
-    }
-  }
-
-  span {
-    color: white;
-    margin-left: 0.5em;
-    font-size: 16px;
-  }
-`
-
 export class SentimentAnalysis extends PureComponent {
   constructor(props) {
     super(props)
@@ -88,7 +90,7 @@ export class SentimentAnalysis extends PureComponent {
   }
 
   state = {
-    currentModule: 'insights',
+    currentModule: 'sentiment',
     keyword: '',
     twitterData: {
       count: 0,
@@ -132,27 +134,27 @@ export class SentimentAnalysis extends PureComponent {
       <Wrapper>
         <MainNav />
         <Sidebar>
-            <SidebarItem onClick={() => this.toggleModule('insights')} className={this.getClasses('insights')}>
-              <FaUsers color={'white'} size={'2em'} />
-              <span>User Insights</span>
-            </SidebarItem>
-            <SidebarItem onClick={() => this.toggleModule('sentiment')} className={this.getClasses('sentiment')}>
-              <FaRegChartBar color={'white'} size={'2em'} />
-              <span>Sentiment Analysis</span>
-            </SidebarItem>
-            <SidebarItem onClick={() => this.toggleModule('geo')} className={this.getClasses('geo')}>
-              <FaGlobeAmericas color={'white'} size={'2em'} />
-              <span>Geographic Analysis</span>
-            </SidebarItem>
-            <SidebarItem onClick={() => this.toggleModule('history')} className={this.getClasses('history')}>
-              <FaHistory color={'white'} size={'2em'} />
-              <span>Historical Trends</span>
-            </SidebarItem>
-        </Sidebar  >
+          <SidebarItem onClick={() => this.toggleModule('insights')} className={this.getClasses('insights')}>
+            <FaUsers color={'white'} size={'2em'} />
+            <span>User Insights</span>
+          </SidebarItem>
+          <SidebarItem onClick={() => this.toggleModule('sentiment')} className={this.getClasses('sentiment')}>
+            <FaRegChartBar color={'white'} size={'2em'} />
+            <span>Sentiment Analysis</span>
+          </SidebarItem>
+          <SidebarItem onClick={() => this.toggleModule('geo')} className={this.getClasses('geo')}>
+            <FaGlobeAmericas color={'white'} size={'2em'} />
+            <span>Geographic Analysis</span>
+          </SidebarItem>
+          <SidebarItem onClick={() => this.toggleModule('history')} className={this.getClasses('history')}>
+            <FaHistory color={'white'} size={'2em'} />
+            <span>Historical Trends</span>
+          </SidebarItem>
+        </Sidebar>
         <MainModule>
           {currentModule === 'insights' && <UserInsights userData={twitterData} />}
           {currentModule === 'sentiment' && <SentimentChart sentimentData={sentimentData} />}
-          {currentModule === 'geo' && <ReactMapGL locations={twitterData.locations} keywordSet={keywordSet}/>}
+          {currentModule === 'geo' && <ReactMapGL locations={twitterData.locations} keywordSet={keywordSet} />}
         </MainModule>
       </Wrapper>
     )

@@ -25,21 +25,16 @@ const Wrapper = styled.div`
   }
 `
 
-const MainModule = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  overflow-y: scroll;
-`
-
-const SubmoduleToggle = styled.div`
+const Header = styled.div`
   position: relative;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  padding-top: 1.5em;
+  align-items: center;
+  padding: 1.25em;
 
   span {
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 400;
     position: relative;
     color: ${navy};
@@ -79,17 +74,13 @@ const SubmoduleToggle = styled.div`
       transform: scaleX(1);
     }
   }
-
 `
 
-const Header = styled.header`
-  width: 100%;
+const HeaderInput = styled.header`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1.25em 2em;
-  padding: 1.5em 0;
 
   .placeholder {
     position: relative;
@@ -111,7 +102,7 @@ const Header = styled.header`
     padding: 20px 0;
     border: 1px solid lightgrey;
     border-radius: 25px;
-    text-indent: 30px;
+    text-indent: 32px;
 
     ::placeholder {
       color: lightgrey;
@@ -131,6 +122,12 @@ const Header = styled.header`
       cursor: pointer;
     }
   }
+`
+
+const MainModule = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  overflow-y: scroll;
 `
 
 const EmptyStateModule = styled.div`
@@ -181,16 +178,16 @@ export class UserInsights extends Component {
 
     return (
       <Wrapper>
-        <SubmoduleToggle>
+        <Header>
           <span onClick={() => this.toggleSubmodule('topTweets')} className={this.getClasses('topTweets')}>TOP TWEETS</span>
           <span onClick={() => this.toggleSubmodule('userGrowth')} className={this.getClasses('userGrowth')}>USER GROWTH</span>
           <span onClick={() => this.toggleSubmodule('timing')} className={this.getClasses('timing')}>FREQUENCY & TIMING</span>
-        </SubmoduleToggle>
-        <Header>
-          <form onSubmit={this.handleSubmit} className="placeholder" data-placeholder="@">
-            <input type="text" onChange={this.handleChange} />
-            <button type="submit">Analyze User</button>
-          </form>
+          <HeaderInput>
+            <form onSubmit={this.handleSubmit} className="placeholder" data-placeholder="@">
+              <input type="text" onChange={this.handleChange} />
+              <button type="submit">Analyze User</button>
+            </form>
+          </HeaderInput>
         </Header>
         {isEmpty(userData) ? (
           <EmptyStateModule>
