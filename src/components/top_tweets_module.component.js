@@ -12,8 +12,6 @@ const Wrapper = styled.div`
 export const TopTweets = (props) => {
   const { userData } = props
 
-  console.log('PIC URL', userData.profilePicUrl)
-
   return (
     <Wrapper>
       {sortBy(userData.topTweets, [(o) => { return o.favorites + o.retweets }]).map((tweet, i) => {

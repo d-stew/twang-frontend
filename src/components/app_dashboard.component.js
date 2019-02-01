@@ -128,8 +128,6 @@ export class SentimentAnalysis extends PureComponent {
   render() {
     const { currentModule, twitterData, sentimentData, keywordSet } = this.state
 
-    console.log('currentModule', currentModule)
-
     return (
       <Wrapper>
         <MainNav />

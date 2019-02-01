@@ -156,7 +156,6 @@ export class UserInsights extends Component {
   }
 
   getClasses(submodule) {
-    console.log(this.state.submodule === submodule)
     return this.state.submodule === submodule ? 'active' : ''
   }
 
@@ -180,8 +179,6 @@ export class UserInsights extends Component {
     const { userData } = this.props
     const { submodule } = this.state
 
-    console.log('USER DATE', userData)
-
     return (
       <Wrapper>
         <SubmoduleToggle>
@@ -190,7 +187,7 @@ export class UserInsights extends Component {
           <span onClick={() => this.toggleSubmodule('timing')} className={this.getClasses('timing')}>FREQUENCY & TIMING</span>
         </SubmoduleToggle>
         <Header>
-          <form onSubmit={this.handleSubmit} class="placeholder" data-placeholder="@">
+          <form onSubmit={this.handleSubmit} className="placeholder" data-placeholder="@">
             <input type="text" onChange={this.handleChange} />
             <button type="submit">Analyze User</button>
           </form>
