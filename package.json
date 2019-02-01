@@ -11,8 +11,7 @@
     "precommit": "pretty-quick --staged"
   },
   "devDependencies": {
-    "prettier": "1.15.3",
-    "react-scripts": "2.1.1"
+    "prettier": "1.15.3"
   },
   "dependencies": {
     "@turf/random": "^6.0.2",
@@ -33,6 +32,7 @@
     "react-redux": "5.1.1",
     "react-router": "4.3.1",
     "react-router-dom": "4.3.1",
+    "react-scripts": "2.1.1",
     "redux": "4.0.1",
     "redux-thunk": "2.3.0",
     "sanitize.css": "7.0.3",
