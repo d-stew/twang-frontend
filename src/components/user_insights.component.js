@@ -4,11 +4,13 @@ import { connect } from 'react-redux'
 import { isEmpty } from 'lodash'
 import Loader from 'react-loaders'
 
-import { RaisedHandBlob } from '../style/assets/blob_raised_hand'
+import { UserGrowth } from './user_growth_module.component'
+import { TimingPatterns } from './timing_patterns_module.component'
+import { TopTweets } from './top_tweets_module.component'
 import { getUserData } from '../redux/actions/user_insights.actions'
 import { UserMap } from '../redux/selectors/index.selectors'
-import { TopTweets } from './top_tweets_module.component'
-import { arctic, navy, turquoise } from '../style/colors'
+import { RaisedHandBlob } from '../style/assets/blob_raised_hand'
+import { arctic, navy } from '../style/colors'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -211,18 +213,22 @@ export class UserInsights extends Component {
             {usernameSet ? (
               <>
                 <Loader type="pacman" />
-                <h3>Consuming tweets...nom nom nom...</h3>
+                <h3>Consuming tweets... Nom nom nom... </h3>
               </>
             ) : (
               <div>
-                <h3>Howdy, bubba!</h3>
+                <h3>HOWDY, BUBBA!</h3>
                 <h3>Search for a username above to get started.</h3>
                 <RaisedHandBlob color={arctic} />
               </div>
             )}
           </EmptyStateModule>
         ) : (
-          <MainModule>{submodule === 'topTweets' && <TopTweets userData={userData} />}</MainModule>
+          <MainModule>
+            {submodule === 'topTweets' && <TopTweets userData={userData} />}
+            {submodule === 'userGrowth' && <UserGrowth userData={userData} />}
+            {submodule === 'timing' && <TimingPatterns userData={userData} />}
+          </MainModule>
         )}
       </Wrapper>
     )

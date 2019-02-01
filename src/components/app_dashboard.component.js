@@ -3,12 +3,13 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { FaGlobeAmericas, FaHistory, FaUsers, FaRegChartBar } from 'react-icons/fa'
 
-import ReactMapGL from './map.component'
+import Geography from './map.component'
 import MainNav from '../components/shared/main_nav.component'
 import UserInsights from '../components/user_insights.component'
-import { AnalyticsMap } from '../redux/selectors/index.selectors'
 import SentimentAnalysis from './sentiment_analysis.component'
-import { arctic, turquoise, navy } from '../style/colors'
+import HistoricalAnalysis from './historical_analysis.component'
+import { AnalyticsMap } from '../redux/selectors/index.selectors'
+import { arctic, navy } from '../style/colors'
 import { getSentimentData, updateAnalyticsData, killStream } from '../redux/actions/analytics.actions'
 // import { startSocket } from '../socket'
 
@@ -171,7 +172,8 @@ export class AppDashboard extends PureComponent {
         <MainModule>
           {currentModule === 'insights' && <UserInsights userData={twitterData} />}
           {currentModule === 'sentiment' && <SentimentAnalysis sentimentData={sentimentData} />}
-          {currentModule === 'geo' && <ReactMapGL locations={twitterData.locations} keywordSet={keywordSet} />}
+          {currentModule === 'history' && <HistoricalAnalysis sentimentData={sentimentData} />}
+          {currentModule === 'geo' && <Geography locations={twitterData.locations} keywordSet={keywordSet} />}
         </MainModule>
       </Wrapper>
     )

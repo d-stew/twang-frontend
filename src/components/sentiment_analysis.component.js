@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import RadarChart from './shared/radar_chart.component'
 import { SentimentThermometer } from './sentiment_thermometer.component'
-import { navy, arctic, turquoise } from '../style/colors'
+import { navy, arctic } from '../style/colors'
 
 const Wrapper = styled.div`
   height: 100%;
@@ -153,10 +153,6 @@ const Row = styled.div`
 `
 
 export default class SentimentAnalysis extends Component {
-  constructor(props) {
-    super(props)
-  }
-
   state = {
     submodule: 'today'
   }

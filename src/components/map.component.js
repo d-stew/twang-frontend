@@ -23,7 +23,7 @@ const mapConfig = {
   zoom: 1
 };
 
-class ReactMapGL extends PureComponent {
+class Geography extends PureComponent {
   constructor(props) {
     super(props)
 
@@ -98,4 +98,4 @@ class ReactMapGL extends PureComponent {
   }
 }
 
-export default ReactMapGL;
+export default Geography;
