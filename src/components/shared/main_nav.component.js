@@ -41,8 +41,8 @@ const MainNav = () => (
   <Wrapper>
     <Link to="/">twang</Link>
     <div>
-      <Link to="https://github.com/d-stew">github</Link>
-      <Link to="https://www.linkedin.com/in/danielstew/">linkedin</Link>
+      <a href="https://github.com/d-stew">github</a>
+      <a href="https://www.linkedin.com/in/danielstew/">linkedin</a>
     </div>
   </Wrapper>
 )
