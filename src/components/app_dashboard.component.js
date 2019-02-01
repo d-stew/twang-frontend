@@ -135,11 +135,11 @@ export class SentimentAnalysis extends PureComponent {
         <MainNav />
         <Sidebar>
             <SidebarItem onClick={() => this.toggleModule('insights')} className={this.getClasses('insights')}>
-              <FaRegChartBar color={'white'} size={'2em'} />
+              <FaUsers color={'white'} size={'2em'} />
               <span>User Insights</span>
             </SidebarItem>
             <SidebarItem onClick={() => this.toggleModule('sentiment')} className={this.getClasses('sentiment')}>
-              <FaUsers color={'white'} size={'2em'} />
+              <FaRegChartBar color={'white'} size={'2em'} />
               <span>Sentiment Analysis</span>
             </SidebarItem>
             <SidebarItem onClick={() => this.toggleModule('geo')} className={this.getClasses('geo')}>

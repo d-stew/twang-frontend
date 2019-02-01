@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 
+import { navy, arctic } from '../style/colors'
+
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -23,11 +25,18 @@ const TweetStat = styled.span`
   margin: 0 1em;
   
   h2 {
+    color: ${arctic};
+    margin: 0;
     font-size: 18px;
     word-break: keep-all;
+
+    &.total {
+      color: ${navy};
+    }
   }
   
   p {
+    margin: 0.25em 0.5em;
     font-size: 10px;
     word-break: keep-all;   
     text-align: center;
@@ -38,8 +47,8 @@ const Tweet = styled.div`
   width: 750px;
   max-width: 750px;
   border: 1px solid lightgrey;
-  border-radius: 4px;
-  padding: 10px 15px;
+  border-radius: 15px;
+  padding: 20px;
   margin: 10px 0;
 `
 
@@ -92,7 +101,7 @@ export const TopTweet = (props) => {
     <Wrapper>
       <TweetStats>
         <TweetStat>
-          <h2>{formatNumber(tweet.favorites + tweet.retweets)}</h2>
+          <h2 className="total">{formatNumber(tweet.favorites + tweet.retweets)}</h2>
           <p>TOTAL ENGAGEMENT</p>
         </TweetStat>
         <TweetStat>

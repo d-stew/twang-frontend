@@ -65,7 +65,7 @@ const SubmoduleToggle = styled.div`
       height: 2px;
       bottom: 0;
       left: 0;
-      background-color: navy;
+      background-color: ${navy};
       visibility: hidden;
       -webkit-transform: scaleX(0);
       transform: scaleX(0);
@@ -198,7 +198,7 @@ export class UserInsights extends Component {
         {isEmpty(userData) ? (
           <EmptyStateModule>
             <RaisedHandBlob color={arctic} />
-            <h3>Hey bubba! Search for a username above to get started.</h3>
+            <h3>Howdy, bubba! Search for a username above to get started.</h3>
           </EmptyStateModule>
         ) : (
           <MainModule>
