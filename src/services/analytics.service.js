@@ -12,7 +12,7 @@ const baseUrl = () => {
       console.log('PRODUCTION')
       return 'https://twang-api.herokuapp.com'
     default: 
-      return 'http://localhost:8080'
+      return 'https://twang-api.herokuapp.com'
   }
 }
 
